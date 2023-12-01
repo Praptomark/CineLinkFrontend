@@ -8,7 +8,7 @@
     authenticated.subscribe(authen => is_Authenticated = authen)
 </script>
 
-<nav class="flex items-center justify-around bg-purple-600 text-white p-2">
+<nav class="fixed w-full flex items-center justify-around bg-purple-600 text-white p-3 -mt-[4rem]">
     <h1 class="font-titilliumweb text-3xl font-bold cursor-default">CineLink</h1>
     <ul class="flex items-center justify-around gap-3 font-medium">
         <li><a class="hover:underline hover:underline-offset-4 active:no-underline" href="/">Home</a></li>
