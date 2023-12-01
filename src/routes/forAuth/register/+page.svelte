@@ -30,7 +30,7 @@
     }
 </script>
 
-<div class="flex flex-col items-center justify-center gap-3">
+<div class="flex flex-col items-center justify-center py-20 gap-3">
     {#if register_error}
         <h1 class="font-nunito">Account with {username} already existed</h1>
     {/if}
