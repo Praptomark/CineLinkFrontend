@@ -41,7 +41,7 @@
         </label>
         <label class="font-nunito flex items-center gap-2">
             Password:
-            <input bind:value={password} type="password" class="border-2 rounded-lg text-center" />
+            <input bind:value={password} type="text" class="border-2 rounded-lg text-center" />
         </label>
         <button type="submit" class=" bg-green-500 py-2 px-4 rounded-md font-nunito text-white font-medium hover:bg-green-600 active:bg-green-500">Register</button>
     </form>
