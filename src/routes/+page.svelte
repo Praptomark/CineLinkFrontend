@@ -3,6 +3,7 @@
     import MovieCard from "$lib/movie_card.svelte";
     
     const movies = data.movie
+    console.log(movies)
 </script>
 
 <main>
