@@ -1,11 +1,13 @@
 <script>
     import "../app.css";
-    import { authenticated } from "$lib/auth";
+    import { authenticated, is_Admin } from "$lib/auth";
 
-    let is_Admin = false
+    let is_admin = false
     let is_Authenticated = false
 
     authenticated.subscribe(authen => is_Authenticated = authen)
+    is_Admin.subscribe(admin => is_admin = admin)
+
 </script>
 
 

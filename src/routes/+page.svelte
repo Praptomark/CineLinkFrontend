@@ -35,7 +35,7 @@
         <div class="flex items-center h-[20rem] px-3 gap-5">
             {#each movies as movie}
                 {#if movie.upcomming == true}
-                    <MovieCard movie_title={movie.title} movie_poster={movie.poster}/>
+                    <MovieCard movie_title={movie.title}/>
                 {/if}
             {/each}
         </div>
