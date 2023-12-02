@@ -8,6 +8,7 @@ export default {
         titilliumweb: 'Titillium Web',
         nunito: 'Nunito',
         opensans: 'Open Sans',
+        trainone: 'Train One',
       },
     },
   },
