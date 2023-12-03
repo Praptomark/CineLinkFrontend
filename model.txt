@@ -1,24 +1,18 @@
 ####################################################################################################
 class Movies(models.Model):
     title = models.CharField(max_length=255)
-    poster = models.ImageField(upload_to="movie_poster/")
+    poster = models.ImageField(upload_to="poster/")
     release_year = models.DateField()
     language = models.CharField(max_length=5)
     description = models.TextField()
     genre = models.CharField(max_length=50)
     duration = models.CharField(max_length=50)
-    upcomming = models.BooleanField(default=False)
-
-    def __str__(self) -> str:
-        return f"{self.title} - {self.duration} - Upcomming: {self.upcomming}"
+    upcoming = models.BooleanField(default=False)
 
 ####################################################################################################
 class HallRoom(models.Model):
-    hallroom_name = models.CharField(max_length=100, unique=True)
+    hallroom_name = models.CharField(max_length=100, unique=True)   
 
-    def __str__(self) -> str:
-        return f"{self.hallroom_name}"
-    
 ####################################################################################################
 class Schedules(models.Model):
     movie = models.ForeignKey(Movies, on_delete=models.CASCADE)
@@ -27,50 +21,33 @@ class Schedules(models.Model):
     start_time = models.TimeField()
     end_time = models.TimeField()
 
-    def __str__(self) -> str:
-        return f"{self.pk} - {self.movie.title} - {self.hallroom.hallroom_name} - Time:({self.start_time} - {self.end_time})"
-
 ####################################################################################################
 class Seats(models.Model):
-    hall_room = models.ForeignKey(HallRoom, on_delete=models.CASCADE)
+    schedule = models.ForeignKey(Schedules, on_delete=models.CASCADE)
     seat_number = models.SmallIntegerField(default=1)
     is_booked = models.BooleanField(default=False)
-
-    def __str__(self) -> str:
-        return f"{self.pk} - {self.hall_room.hallroom_name} - {self.seat_number} - Booked: {self.is_booked}"
 
 ####################################################################################################
 class CartProducts(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     seat = models.ForeignKey(Seats, on_delete=models.CASCADE)
-    schedule = models.ForeignKey(Schedules, on_delete=models.CASCADE)
-
-    def __str__(self) -> str:
-        return f"{self.user.username} - Seat: {self.seat} - {self.schedule}"
 
 ####################################################################################################
 class Cart(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     cart_products = models.ManyToManyField(CartProducts)
 
-    def __str__(self) -> str:
-        return f"{self.user.username}"
-
 ####################################################################################################
 class Booked(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
-    is_booked = models.BooleanField(default=True)
-    
-    def __str__(self) -> str:
-        return f"{self.user.username} - Booked: {self.is_booked}"
+    cart = models.ForeignKey(Cart, on_delete=models.SET_NULL, null=True)
 
 ####################################################################################################
 class Tickets(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    booked = models.ForeignKey(Booked, on_delete=models.CASCADE)
     expired = models.BooleanField(default=False)
     ticket_number = models.CharField(unique=True, max_length=15)
+    seat_numbers = models.ManyToManyField(Seats)
+    schedule = models.ForeignKey(Schedules, on_delete=models.CASCADE, null=True)
 
-    def __str__(self) -> str:
-        return f"{self.user.username} - Ticket_Number: {self.ticket_number}"
+####################################################################################################
