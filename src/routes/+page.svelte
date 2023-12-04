@@ -1,9 +1,12 @@
 <script>
-    export let data
     import MovieCard from "$lib/movie_card.svelte";
     
-    const movies = data.movie
-    console.log(movies)
+    async function get_movies(){
+        const response = await fetch("http://127.0.0.1:8000/api/movies/")
+        const movie_data = response.json()
+        return (movie_data)
+    }
+    console.log(get_movies())
 </script>
 
 <main>
@@ -34,11 +37,15 @@
     </div>
     <div class="flex items-center gap-3 overflow-x-auto snap-x">
         <div class="flex items-center h-[20rem] px-3 gap-5">
-            {#each movies as movie}
-                {#if movie.upcomming == true}
-                    <MovieCard movie_title={movie.title}/>
-                {/if}
-            {/each}
+            {#await get_movies()}
+                <h1 class="font-nunito text-center">Loading Movies...!!!</h1>
+            {:then movie_data} 
+                {#each movie_data as movie}
+                    {#if movie.upcoming == true}
+                        <MovieCard movie_title={movie.title} movie_poster={movie.poster}/>
+                    {/if}
+                {/each}
+            {/await}
         </div>
     </div>
 </main>
