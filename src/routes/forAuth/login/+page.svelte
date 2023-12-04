@@ -1,6 +1,6 @@
 <script>
     import { goto } from "$app/navigation";
-    import { authenticated } from "$lib/auth";
+    import { authenticated, is_Admin } from "$lib/auth";
 
     let username = ""
     let password = ""
@@ -30,6 +30,13 @@
                 console.log(token)
 
                 authenticated.set(true)
+
+                // Check if the user is a superuser and set is_Admin accordingly
+                // if (is_superuser) {
+                //     is_Admin.set(true);
+                // } else {
+                //     is_Admin.set(false);
+                // }
 
                 // Redirect to the home page
                 await goto("/forAuthenticated/profile");
