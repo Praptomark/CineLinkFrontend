@@ -1,14 +1,6 @@
 <script>
     import "../app.css";
-    import { authenticated, is_Admin } from "$lib/auth";
-
-    let is_admin = false
-    let is_Authenticated = false
-
-    authenticated.subscribe(authen => is_Authenticated = authen)
-    is_Admin.subscribe(admin => is_admin = admin)
-
-
+    import { isLoggedIn, isSuperUser } from '$lib/auth';
 </script>
 
 
@@ -18,8 +10,8 @@
         <li><a class="hover:underline hover:underline-offset-4 active:no-underline" href="/">Home</a></li>
         <li><a class="hover:underline hover:underline-offset-4 active:no-underline" href="/forAll/schedules">Schedules</a></li>
         <li><a class="hover:underline hover:underline-offset-4 active:no-underline" href="/forAll/about">About</a></li>
-        {#if is_Authenticated}
-            {#if is_admin}
+        {#if $isLoggedIn}
+            {#if $isSuperUser}
                 <li><a class="hover:underline hover:underline-offset-4 active:no-underline text-orange-500" href="/forAdmin/hallroom">hallroom</a></li>
                 <li><a class="hover:underline hover:underline-offset-4 active:no-underline text-orange-500" href="/forAdmin/movies">movies</a></li>
                 <li><a class="hover:underline hover:underline-offset-4 active:no-underline text-orange-500" href="/forAdmin/schedules">schedules</a></li>
@@ -31,7 +23,7 @@
         {/if}
     </ul>
     <div class="flex items-center gap-3 font-nunito">
-        {#if is_Authenticated}
+        {#if $isLoggedIn}
             <a class="bg-violet-700 px-4 py-2 rounded-xl hover:bg-violet-500 active:bg-violet-700" href="/forAuthenticated/profile">profile</a>
             <a href="/forAuthenticated/cart">cart</a>
         {:else}

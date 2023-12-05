@@ -1,4 +1,4 @@
-import { writable } from "svelte/store";
+import { writable } from 'svelte/store';
 
-export const authenticated = writable(false)
-export const is_Admin = writable(false)
+export const isLoggedIn = writable(false);
+export const isSuperUser = writable(false);

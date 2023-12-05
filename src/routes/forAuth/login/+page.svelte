@@ -1,80 +1,79 @@
 <script>
+    import { onMount } from "svelte";
+    import { isLoggedIn, isSuperUser } from "$lib/auth"
     import { goto } from "$app/navigation";
-    import { authenticated, is_Admin } from "$lib/auth";
 
+    // Form variables
     let username = "";
     let password = "";
-    let login_error = false;
-    let admin_status = false;
 
-    const admin_checker = async () => {
-        try {
-            const response = await fetch("http://127.0.0.1:8000/api/user/", {
-                headers: {
-                    Authorization: `Token ${document.cookie.split("=")[1]}`, // Assuming your token is stored in a cookie
-                },
-            });
+    // Function to handle login
+    const login = async () => {
+        const response = await fetch("http://127.0.0.1:8000/api/login/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                username,
+                password,
+            }),
+        });
 
-            if (response.ok) {
-                const data = await response.json();
-                admin_status = data.is_superuser;
-            } else {
-                console.error("Failed to fetch user data");
-            }
-        } catch (error) {
-            console.error("Error fetching user data:", error);
+        if (response.ok) {
+            const data = await response.json();
+
+            // Save token and user info in local storage
+            localStorage.setItem("jwt_token", data.token);
+            localStorage.setItem("token_expiry", data.expiry);
+
+            // Set store variables
+            isLoggedIn.set(true);
+
+            // Fetch user info
+            await fetchUserInfo();
+            goto("/")
+        } else {
+            console.error("Login failed");
         }
     };
 
-    async function login() {
-        try {
-            const response = await fetch("http://127.0.0.1:8000/api/login/", {
-                method: "POST",
+    // Function to fetch user info
+    const fetchUserInfo = async () => {
+        const token = localStorage.getItem("jwt_token");
+
+        if (token) {
+            const response = await fetch("http://127.0.0.1:8000/api/user/", {
                 headers: {
-                    "Content-Type": "application/json",
+                    Authorization: `Token ${token}`,
                 },
-                credentials: "include",
-                body: JSON.stringify({
-                    username,
-                    password,
-                }),
             });
 
             if (response.ok) {
-                // Assuming the server returns a JWT token upon successful login
-                const { token } = await response.json();
+                const userData = await response.json();
 
-                // Save the token to cookies
-                document.cookie = `Token=${token}; path=/`;
-
-                authenticated.set(true);
-
-                admin_checker()
-
-                // Check if the user is a superuser and set is_Admin accordingly
-                if (admin_status === true) {
-                    is_Admin.set(true);
-                } else {
-                    is_Admin.set(false);
-                }
-
-                // Redirect to the home page
-                await goto("/forAuthenticated/profile");
-            } else {
-                // Handle login failure, e.g., display an error message
-                login_error = true;
-                authenticated.set(false);
+                // Set isSuperUser based on user info
+                isSuperUser.set(userData.is_superuser);
             }
-        } catch (error) {
-            console.error("Error during login:", error);
         }
-    }
+    };
+
+    // Check for stored token on component mount
+    onMount(async () => {
+        const storedToken = localStorage.getItem("jwt_token");
+
+        if (storedToken) {
+            // Set store variables
+            isLoggedIn.set(true);
+
+            // Fetch user info
+            await fetchUserInfo();
+        }
+    });
 </script>
 
+<!-- Your Svelte component HTML -->
 <div class="flex flex-col items-center justify-center py-[10rem] gap-3">
-    {#if login_error}
-        <h1 class="font-nunito">Account with {username} not found</h1>
-    {/if}
     <form
         on:submit|preventDefault={login}
         class="flex flex-col items-center gap-5 border-2 p-4 rounded-lg"
@@ -97,7 +96,7 @@
         </label>
         <button
             type="submit"
-            class=" bg-green-500 py-2 px-4 rounded-md font-nunito text-white font-medium hover:bg-green-600 active:bg-green-500"
+            class="bg-green-500 py-2 px-4 rounded-md font-nunito text-white font-medium hover:bg-green-600 active:bg-green-500"
             >Login</button
         >
     </form>
