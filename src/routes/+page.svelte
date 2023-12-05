@@ -49,7 +49,7 @@
             {:then upcoming_movie_data} 
                 {#each upcoming_movie_data as movie}
                     {#if movie.upcoming == true}
-                        <MovieCard movie_title={movie.title} movie_poster={movie.poster}/>
+                        <MovieCard movie_title={movie.title} movie_poster={movie.poster} movie_link={movie.movie_info_link}/>
                     {/if}
                 {/each}
             {/await}
@@ -68,7 +68,7 @@
                 <h1 class="font-nunito text-center">Loading Movies...!!!</h1>
             {:then ongoing_movie_data} 
                 {#each ongoing_movie_data as film}
-                    <MovieCard movie_title={film.movie.title} movie_poster={film.movie.poster}/>
+                    <MovieCard movie_title={film.movie.title} movie_poster={film.movie.poster} movie_link={film.movie.movie_info_link}/>
                 {/each}
             {/await}
         </div>

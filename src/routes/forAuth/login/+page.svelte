@@ -2,9 +2,29 @@
     import { goto } from "$app/navigation";
     import { authenticated, is_Admin } from "$lib/auth";
 
-    let username = ""
-    let password = ""
-    let login_error = false
+    let username = "";
+    let password = "";
+    let login_error = false;
+    let admin_status = false;
+
+    const admin_checker = async () => {
+        try {
+            const response = await fetch("http://127.0.0.1:8000/api/user/", {
+                headers: {
+                    Authorization: `Token ${document.cookie.split("=")[1]}`, // Assuming your token is stored in a cookie
+                },
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                admin_status = data.is_superuser;
+            } else {
+                console.error("Failed to fetch user data");
+            }
+        } catch (error) {
+            console.error("Error fetching user data:", error);
+        }
+    };
 
     async function login() {
         try {
@@ -16,7 +36,7 @@
                 credentials: "include",
                 body: JSON.stringify({
                     username,
-                    password
+                    password,
                 }),
             });
 
@@ -27,23 +47,23 @@
                 // Save the token to cookies
                 document.cookie = `Token=${token}; path=/`;
 
-                console.log(token)
+                authenticated.set(true);
 
-                authenticated.set(true)
+                admin_checker()
 
                 // Check if the user is a superuser and set is_Admin accordingly
-                // if (is_superuser) {
-                //     is_Admin.set(true);
-                // } else {
-                //     is_Admin.set(false);
-                // }
+                if (admin_status === true) {
+                    is_Admin.set(true);
+                } else {
+                    is_Admin.set(false);
+                }
 
                 // Redirect to the home page
                 await goto("/forAuthenticated/profile");
             } else {
                 // Handle login failure, e.g., display an error message
-                login_error = true
-                authenticated.set(false)
+                login_error = true;
+                authenticated.set(false);
             }
         } catch (error) {
             console.error("Error during login:", error);
@@ -55,16 +75,36 @@
     {#if login_error}
         <h1 class="font-nunito">Account with {username} not found</h1>
     {/if}
-    <form on:submit|preventDefault={login} class="flex flex-col items-center gap-5 border-2 p-4 rounded-lg">
+    <form
+        on:submit|preventDefault={login}
+        class="flex flex-col items-center gap-5 border-2 p-4 rounded-lg"
+    >
         <label class="font-nunito flex items-center gap-2">
             Username:
-            <input bind:value={username} type="text" class="border-2 rounded-lg text-center" />
+            <input
+                bind:value={username}
+                type="text"
+                class="border-2 rounded-lg text-center"
+            />
         </label>
         <label class="font-nunito flex items-center gap-2">
             Password:
-            <input bind:value={password} type="text" class="border-2 rounded-lg text-center" />
+            <input
+                bind:value={password}
+                type="text"
+                class="border-2 rounded-lg text-center"
+            />
         </label>
-        <button type="submit" class=" bg-green-500 py-2 px-4 rounded-md font-nunito text-white font-medium hover:bg-green-600 active:bg-green-500">Login</button>
+        <button
+            type="submit"
+            class=" bg-green-500 py-2 px-4 rounded-md font-nunito text-white font-medium hover:bg-green-600 active:bg-green-500"
+            >Login</button
+        >
     </form>
-    <p class="font-nunito">Need an account <a href="/forAuth/register" class="font-nunito text-violet-400">Register</a></p>
+    <p class="font-nunito">
+        Need an account <a
+            href="/forAuth/register"
+            class="font-nunito text-violet-400">Register</a
+        >
+    </p>
 </div>

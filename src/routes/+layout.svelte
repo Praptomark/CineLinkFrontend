@@ -19,7 +19,7 @@
         <li><a class="hover:underline hover:underline-offset-4 active:no-underline" href="/forAll/schedules">Schedules</a></li>
         <li><a class="hover:underline hover:underline-offset-4 active:no-underline" href="/forAll/about">About</a></li>
         {#if is_Authenticated}
-            {#if is_Admin}
+            {#if is_admin}
                 <li><a class="hover:underline hover:underline-offset-4 active:no-underline text-orange-500" href="/forAdmin/hallroom">hallroom</a></li>
                 <li><a class="hover:underline hover:underline-offset-4 active:no-underline text-orange-500" href="/forAdmin/movies">movies</a></li>
                 <li><a class="hover:underline hover:underline-offset-4 active:no-underline text-orange-500" href="/forAdmin/schedules">schedules</a></li>
