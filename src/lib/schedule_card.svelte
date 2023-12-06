@@ -31,7 +31,7 @@
     class="flex items-center w-[80rem] h-[15rem] border-2 rounded-lg py-3 border-violet-400 justify-around font-opensans bg-slate-700 text-white font-medium"
 >
     <a
-        href={movie_link}
+        href={movie_link} target="_blank"
         class="rounded-lg w-[11rem] h-full overflow-hidden border border-white"
     >
         <img

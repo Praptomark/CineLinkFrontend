@@ -4,7 +4,7 @@
 </script>
 
 
-<nav class="fixed w-full flex items-center justify-around bg-purple-600 text-white p-3 -mt-[4rem] z-50">
+<nav class="fixed w-full flex items-center justify-around bg-purple-600 text-white p-3 -mt-[4rem] z-50 border-b-2 border-b-purple-400">
     <h1 class="font-titilliumweb text-3xl font-bold cursor-default">CineLink</h1>
     <ul class="flex items-center justify-around gap-3 font-medium">
         <li><a class="hover:underline hover:underline-offset-4 active:no-underline" href="/">Home</a></li>
