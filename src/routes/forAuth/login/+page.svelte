@@ -23,9 +23,7 @@
         if (response.ok) {
             const data = await response.json();
 
-            // Save token and user info in local storage
-            localStorage.setItem("jwt_token", data.token);
-            localStorage.setItem("token_expiry", data.expiry);
+            document.cookie = `jwt_token=${data.token}; expires=${new Date(data.expiry).toUTCString()}; path=/`;
 
             // Set store variables
             isLoggedIn.set(true);
@@ -90,7 +88,7 @@
             Password:
             <input
                 bind:value={password}
-                type="text"
+                type="password"
                 class="border-2 rounded-lg text-center"
             />
         </label>

@@ -19,6 +19,7 @@
         language={shows.movie.language}
         start_time={shows.start_time}
         end_time={shows.end_time}
+        book_button={`/forAll/schedules/${shows.id}`}
         />
     {/each}
 </div>
