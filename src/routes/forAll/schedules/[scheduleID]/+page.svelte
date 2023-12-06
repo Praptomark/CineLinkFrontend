@@ -80,7 +80,7 @@
         >
             <h1 class="font-nunito font-bold text-7xl">SCREEN</h1>
         </div>
-        <div class="flex ">
+        <div class="flex flex-wrap gap-2 justify-center py-10">
             {#await seats()}
                 <h1>Loading...</h1>
             {:then seat} 
