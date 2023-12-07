@@ -1,5 +1,5 @@
 <script>
-    import { onMount } from "svelte";
+    import { goto } from "$app/navigation";
 
     function getCookie(name) {
         const cookies = document.cookie.split(";");
@@ -27,6 +27,7 @@
     }
 
     async function make_cart() {
+        
         const token = getCookie("jwt_token");
         let response = await fetch(`http://127.0.0.1:8000/api/create-cart/`, {
             method: "POST",
@@ -35,9 +36,12 @@
                 Authorization: `Token ${token}`,
             },
         });
-
-        const responseData = await response.json();
-        return(responseData)
+        await goto("/forAuthenticated/payment")
+        if (response.ok) {
+            const responseData = await response.json();
+            return(responseData)
+        }
+        
     }
     console.log(get_cartproducts())
 </script>
