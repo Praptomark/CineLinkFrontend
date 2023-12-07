@@ -88,7 +88,7 @@
             Password:
             <input
                 bind:value={password}
-                type="password"
+                type="text"
                 class="border-2 rounded-lg text-center"
             />
         </label>
