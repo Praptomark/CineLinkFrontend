@@ -1,9 +1,10 @@
+
 ####################################################################################################
 class Movies(models.Model):
     title = models.CharField(max_length=255)
     poster = models.ImageField(upload_to="poster/")
     release_year = models.DateField()
-    language = models.CharField(max_length=5)
+    language = models.CharField(max_length=30)
     movie_info_link = models.URLField()
     genre = models.CharField(max_length=50)
     duration = models.CharField(max_length=50)
@@ -11,8 +12,8 @@ class Movies(models.Model):
 
 ####################################################################################################
 class HallRoom(models.Model):
-    hallroom_name = models.CharField(max_length=100, unique=True)   
-
+    hallroom_name = models.CharField(max_length=100, unique=True)
+    
 ####################################################################################################
 class Schedules(models.Model):
     movie = models.ForeignKey(Movies, on_delete=models.CASCADE)
@@ -20,34 +21,18 @@ class Schedules(models.Model):
     show_date = models.DateField()
     start_time = models.TimeField()
     end_time = models.TimeField()
-
 ####################################################################################################
 class Seats(models.Model):
     schedule = models.ForeignKey(Schedules, on_delete=models.CASCADE)
     seat_number = models.SmallIntegerField(default=1)
     is_booked = models.BooleanField(default=False)
-
 ####################################################################################################
-class CartProducts(models.Model):
+
+class Cart(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     seat = models.ForeignKey(Seats, on_delete=models.CASCADE)
-
-####################################################################################################
-class Cart(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    cart_products = models.ManyToManyField(CartProducts)
-
 ####################################################################################################
 class Booked(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    cart = models.ForeignKey(Cart, on_delete=models.SET_NULL, null=True)
-
-####################################################################################################
-class Tickets(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    expired = models.BooleanField(default=False)
+    seat = models.ForeignKey(Seats, on_delete=models.CASCADE)
     ticket_number = models.CharField(unique=True, max_length=15)
-    seat_numbers = models.ManyToManyField(Seats)
-    schedule = models.ForeignKey(Schedules, on_delete=models.CASCADE, null=True)
-
-####################################################################################################
