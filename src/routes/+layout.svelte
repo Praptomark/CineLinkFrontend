@@ -1,6 +1,7 @@
 <script>
     import "../app.css";
     import { isLoggedIn, isSuperUser } from '$lib/auth';
+    import { cartCounter } from "$lib/cart_counter"
 </script>
 
 
@@ -25,7 +26,7 @@
     <div class="flex items-center gap-3 font-nunito">
         {#if $isLoggedIn}
             <a class="bg-violet-700 px-4 py-2 rounded-xl hover:bg-violet-500 active:bg-violet-700" href="/forAuthenticated/profile">profile</a>
-            <a href="/forAuthenticated/cart">cart</a>
+            <a href="/forAuthenticated/cart">cart {$cartCounter}</a>
         {:else}
             <a class="hidden" href="/forAuthenticated/profile">profile</a>
             <a class="hidden" href="/forAuthenticated/cart">cart</a>

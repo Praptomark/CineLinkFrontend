@@ -1,5 +1,6 @@
 <script>
     import { goto } from "$app/navigation";
+    import { cartCounter, updateCartCounter } from "$lib/cart_counter"
 
     function getCookie(name) {
         const cookies = document.cookie.split(";");
@@ -23,6 +24,9 @@
         });
 
         const responseData = await response.json();
+        // Update the total items in the store
+        updateCartCounter(responseData.length);
+        
         return(responseData)
     }
 
@@ -33,8 +37,12 @@
 </script>
 
 <div class="flex flex-col items-center py-5">
-    <div>
+    <div class="flex items-center justify-around gap-40">
+        <h1 class="font-opensans font-medium text-lg">Total Items: {$cartCounter}</h1>
+
         <button on:click={payment_function} class="font-opensans text-white bg-purple-700 py-5 px-10 text-center font-semibold rounded-lg text-xl active:bg-purple-700 hover:bg-purple-500">checkout</button>
+
+        <h1 class="font-opensans font-medium text-lg">Total Amount: {$cartCounter * 400} Taka</h1>
     </div>
     <div class="flex flex-col items-center gap-3 py-5">
         {#await get_cart()}
