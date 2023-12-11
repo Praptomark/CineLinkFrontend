@@ -1,7 +1,21 @@
 <script>
+    import { goto } from "$app/navigation";
+    import TicketCard from "$lib/ticket_card.svelte";
+
+    function getCookie(name) {
+        const cookies = document.cookie.split(";");
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.startsWith(name + "=")) {
+                return cookie.substring(name.length + 1);
+            }
+        }
+        return null;
+    }
+
     async function logout() {
         // Get the token from local storage
-        const token = localStorage.getItem("token");
+        const token = getCookie("jwt_token");
 
         // Make the API request to logout
         const response = await fetch("http://127.0.0.1:8000/api/logout/", {
@@ -15,17 +29,65 @@
         // Check if the response status is 200
         if (response.status === 200) {
             // Logout successful, delete from local storage and cookie storage
-            localStorage.removeItem("token");
-            // Additional code for clearing cookies if needed
-            // document.cookie = "";
+            const cookies = document.cookie.split(";");
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i];
+                const eqPos = cookie.indexOf("=");
+                const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+                document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;`;
 
-            console.log("Logout successful");
-        }
+                goto("/")
+
+                console.log("Logout successful");
+            }
+    }}
+
+    async function get_user() {
+        const token = getCookie("jwt_token");
+        let response = await fetch(`http://127.0.0.1:8000/api/user/`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Token ${token}`,
+            },
+        });
+
+        const responseData = await response.json();        
+        return(responseData)
+    }
+
+    async function get_user_tickets() {
+        const token = getCookie("jwt_token");
+        let response = await fetch(`http://127.0.0.1:8000/api/user/`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Token ${token}`,
+            },
+        });
+
+        const responseData = await response.json();        
+        return(responseData)
     }
 </script>
 
-<button
-    on:click={logout}
-    class="py-2 px-4 rounded-lg bg-yellow-500 font-medium font-nunito"
-    >Logout</button
->
+<div class="flex w-full p-10 gap-10 bg-slate-500 justify-around">
+    <div>
+        <button on:click={logout} class="bg-yellow-500 py-2 px-5 rounded-md text-lg font-opensans font-medium">Logout</button>
+        <!-- <button on:click={logout} class="bg-green-500 py-2 px-5 rounded-md text-lg font-opensans font-medium">Edit profile</button> -->
+    </div>
+    <div class="font-opensans font-medium">
+        {#await get_user()}
+            <h1>Loading...</h1>
+        {:then responseData} 
+            <h1>Username: {responseData.username}</h1>
+        {/await}
+    </div>
+    <div class="p-5 rounded-md border-2 h-[25rem]">
+        {#await }
+            
+        {:then } 
+            
+        {/await}
+    </div>
+</div>
