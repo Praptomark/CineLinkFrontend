@@ -56,9 +56,9 @@
         return(responseData)
     }
 
-    async function get_user_tickets() {
+    async function booked_tickets() {
         const token = getCookie("jwt_token");
-        let response = await fetch(`http://127.0.0.1:8000/api/user/`, {
+        let response = await fetch(`http://127.0.0.1:8000/api/booked/`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -71,7 +71,7 @@
     }
 </script>
 
-<div class="flex w-full p-10 gap-10 bg-slate-500 justify-around">
+<div class="flex w-full p-10 gap-10 justify-around">
     <div>
         <button on:click={logout} class="bg-yellow-500 py-2 px-5 rounded-md text-lg font-opensans font-medium">Logout</button>
         <!-- <button on:click={logout} class="bg-green-500 py-2 px-5 rounded-md text-lg font-opensans font-medium">Edit profile</button> -->
@@ -83,11 +83,23 @@
             <h1>Username: {responseData.username}</h1>
         {/await}
     </div>
-    <div class="p-5 rounded-md border-2 h-[25rem]">
-        {#await }
-            
-        {:then } 
-            
+    <div class="p-5 rounded-md border-2 border-black flex flex-col items-center gap-4">
+        {#await booked_tickets()}
+            <h1>Loading...</h1>
+        {:then responseData} 
+            {#each responseData as ticket}
+                <TicketCard 
+                username={ticket.user.username} 
+                hallroom={ticket.seat.schedule.hallroom.hallroom_name} 
+                movie={ticket.seat.schedule.movie.title}
+                seat_number={ticket.seat.seat_number}
+                show_date={ticket.seat.schedule.show_date}
+                start_time={ticket.seat.schedule.start_time}
+                end_time={ticket.seat.schedule.end_time}
+                ticket_number={ticket.ticket_number}
+                ticket_id={ticket.id}
+                />
+            {/each}
         {/await}
     </div>
 </div>
