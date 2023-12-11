@@ -12,9 +12,9 @@
         return null;
     }
 
-    async function get_cartproducts() {
+    async function get_cart() {
         const token = getCookie("jwt_token");
-        let response = await fetch(`http://127.0.0.1:8000/api/cartproducts/`, {
+        let response = await fetch(`http://127.0.0.1:8000/api/cart/`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -26,32 +26,18 @@
         return(responseData)
     }
 
-    async function make_cart() {
-        
-        const token = getCookie("jwt_token");
-        let response = await fetch(`http://127.0.0.1:8000/api/create-cart/`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Token ${token}`,
-            },
-        });
-        await goto("/forAuthenticated/payment")
-        if (response.ok) {
-            const responseData = await response.json();
-            return(responseData)
-        }
-        
+    function payment_function() {
+        goto("/forAuthenticated/payment")
     }
-    console.log(get_cartproducts())
+    console.log(get_cart())
 </script>
 
 <div class="flex flex-col items-center py-5">
     <div>
-        <button on:click={make_cart} class="font-opensans text-white bg-purple-700 py-5 px-10 text-center font-semibold rounded-lg text-xl active:bg-purple-700 hover:bg-purple-500">checkout</button>
+        <button on:click={payment_function} class="font-opensans text-white bg-purple-700 py-5 px-10 text-center font-semibold rounded-lg text-xl active:bg-purple-700 hover:bg-purple-500">checkout</button>
     </div>
     <div class="flex flex-col items-center gap-3 py-5">
-        {#await get_cartproducts()}
+        {#await get_cart()}
             <h1>Loading...</h1>
         {:then responseData}
             {#each responseData as sits}

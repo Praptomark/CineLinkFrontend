@@ -16,16 +16,15 @@
         return null;
     }
 
-    async function add_to_cartproducts() {
+    async function add_cart() {
         is_selected = !is_selected;
         const token = getCookie("jwt_token");
-        let response = await fetch(
-            `http://127.0.0.1:8000/api/seat-to-cartproducts/`,
+        const response = await fetch("http://127.0.0.1:8000/api/add-cart/",
             {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization: `Token ${token}`,
+                    "Authorization": `Token ${token}`,
                 },
                 body: JSON.stringify({
                     seat_id: Number(seat_id),
@@ -42,16 +41,15 @@
         }
     }
 
-    export async function delete_cartproducts() {
+    export async function delete_cart() {
         is_selected = !is_selected;
         const token = getCookie("jwt_token");
-        let response = await fetch(
-            `http://127.0.0.1:8000/api/delete-cartproducts/`,
+        const response = await fetch("http://127.0.0.1:8000/api/delete-cart/",
             {
                 method: "DELETE",
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization: `Token ${token}`,
+                    "Authorization": `Token ${token}`,
                 },
                 body: JSON.stringify({
                     seat_id: Number(seat_id),
@@ -80,7 +78,7 @@
         </div>
     {:else if is_selected}
         <button
-            on:click={delete_cartproducts}
+            on:click={delete_cart}
             class="w-[4rem] h-[4rem] bg-purple-500 flex flex-col justify-center items-center rounded-xl"
         >
             <h1 class="text-white font-medium font-opensans cursor-default">
@@ -89,7 +87,7 @@
         </button>
     {:else}
         <button
-            on:click={add_to_cartproducts}
+            on:click={add_cart}
             class="w-[4rem] h-[4rem] bg-green-500 flex flex-col justify-center items-center rounded-xl"
         >
             <h1 class="text-white font-medium font-opensans cursor-default">
