@@ -17,7 +17,7 @@
                 }),
             });
             if (response.ok) {
-                await goto("/corfirmationpage/forlogin")
+                await goto("/corfirmationpage/forregister")
             } else {
                 register_error = true
             }
