@@ -27,7 +27,7 @@
         });
 
         // Check if the response status is 200
-        if (response.status === 200) {
+        if (response.ok) {
             // Logout successful, delete from local storage and cookie storage
             const cookies = document.cookie.split(";");
             for (let i = 0; i < cookies.length; i++) {
@@ -36,6 +36,7 @@
                 const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
                 document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;`;
 
+                window.location.reload()
                 goto("/")
 
                 console.log("Logout successful");
@@ -97,7 +98,6 @@
                 start_time={ticket.seat.schedule.start_time}
                 end_time={ticket.seat.schedule.end_time}
                 ticket_number={ticket.ticket_number}
-                ticket_id={ticket.id}
                 />
             {/each}
         {/await}

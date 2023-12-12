@@ -1,6 +1,4 @@
 <script>
-    import Icon from '@iconify/svelte';
-
     export let username = "Username"
     export let hallroom = "hallroom"
     export let movie = "movie"
@@ -9,43 +7,6 @@
     export let start_time = "start time"
     export let end_time = "end time"
     export let ticket_number = "ticket"
-    export let ticket_id = ""
-
-    // Function to get the value of a cookie by name
-    function getCookie(name) {
-        const cookies = document.cookie.split(";");
-        for (let i = 0; i < cookies.length; i++) {
-            const cookie = cookies[i].trim();
-            if (cookie.startsWith(name + "=")) {
-                return cookie.substring(name.length + 1);
-            }
-        }
-        return null;
-    }
-
-    export async function delete_ticket() {
-        const token = getCookie("jwt_token");
-        const response = await fetch("http://127.0.0.1:8000/api/delete-book/",
-            {
-                method: "DELETE",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Token ${token}`,
-                },
-                body: JSON.stringify({
-                    booked_id: Number(ticket_id),
-                }),
-            },
-        );
-        if (response.ok) {
-            const responseData = await response.json();
-            // Handle the response data as needed
-            console.log("Success:", responseData);
-        } else {
-            // Handle errors
-            console.error("Error:", response.statusText);
-        }
-    }
 
 </script>
 
@@ -66,5 +27,4 @@
         </div>
         <h1 class=" font-titilliumweb font-medium py-2 text-lg">{ticket_number}</h1>
     </div>
-    <button on:click={delete_ticket}><Icon icon="ic:round-delete" color="red" width="30" height="30" /></button>
 </div>
