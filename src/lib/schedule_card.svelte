@@ -1,4 +1,6 @@
 <script>
+    import { isLoggedIn } from "./auth";
+
     export let movie_poster = "/pexels-pavel-danilyuk-7234294.jpg";
     export let hall_name = "Some Hall";
     export let movie_title = "Some movie";
@@ -31,7 +33,8 @@
     class="flex items-center w-[80rem] h-[15rem] border-2 rounded-lg py-3 border-violet-400 justify-around font-opensans bg-slate-700 text-white font-medium"
 >
     <a
-        href={movie_link} target="_blank"
+        href={movie_link}
+        target="_blank"
         class="rounded-lg w-[11rem] h-full overflow-hidden border border-white"
     >
         <img
@@ -55,9 +58,17 @@
         <p class="text-center">to</p>
         <h1>End Time: {tConvert(end_time)}</h1>
     </div>
-    <a
-        href={book_button}
-        class="py-2 px-4 rounded-lg bg-violet-500 hover:bg-violet-400 active:bg-violet-500"
-        >BOOK</a
-    >
+    {#if $isLoggedIn}
+        <a
+            href={book_button}
+            class="py-2 px-4 rounded-lg bg-violet-500 hover:bg-violet-400 active:bg-violet-500"
+            >BOOK</a
+        >
+    {:else}
+        <a
+            href="/forAuth/login"
+            class="py-2 px-4 rounded-lg bg-violet-500 hover:bg-violet-400 active:bg-violet-500"
+            >BOOK</a
+        >
+    {/if}
 </div>
