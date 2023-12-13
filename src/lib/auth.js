@@ -34,6 +34,3 @@ export const isSuperUser = derived(jwtToken, $jwtToken => {
 if (!import.meta.env.SSR) {
     jwtToken.set(getCookie('jwt_token'));
 }
-
-console.log(jwtToken);
-console.log(isLoggedIn);
