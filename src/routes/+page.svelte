@@ -32,9 +32,6 @@
 
         return filteredOngoingMovies;
     }
-
-    console.log(upcoming_movies());
-    console.log(ongoing_movies());
 </script>
 
 <main>

@@ -1,6 +1,6 @@
 <script>
     import { onMount } from "svelte";
-    import { isLoggedIn, isSuperUser } from "$lib/auth"
+    // import { isSuperUser } from "$lib/auth"
     import { goto } from "$app/navigation";
 
     // Form variables
@@ -24,13 +24,11 @@
             const data = await response.json();
 
             document.cookie = `jwt_token=${data.token}; expires=${new Date(data.expiry).toUTCString()}; path=/`;
-
-            // Set store variables
-            isLoggedIn.set(true);
+            console.log(data)
 
             // Fetch user info
             await fetchUserInfo();
-            goto("/")
+            goto("/");
         } else {
             console.error("Login failed");
         }
@@ -49,9 +47,10 @@
 
             if (response.ok) {
                 const userData = await response.json();
+                console.log(userData)
 
                 // Set isSuperUser based on user info
-                isSuperUser.set(userData.is_superuser);
+                // isSuperUser.set(userData.is_superuser);
             }
         }
     };
@@ -61,8 +60,6 @@
         const storedToken = localStorage.getItem("jwt_token");
 
         if (storedToken) {
-            // Set store variables
-            isLoggedIn.set(true);
 
             // Fetch user info
             await fetchUserInfo();

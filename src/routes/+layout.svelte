@@ -1,6 +1,6 @@
 <script>
     import "../app.css";
-    import { isLoggedIn, isSuperUser } from '$lib/auth';
+    import { isLoggedIn } from '$lib/auth';
     import { cartCounter } from "$lib/cart_counter"
 </script>
 
@@ -11,7 +11,7 @@
         <li><a class="hover:underline hover:underline-offset-4 active:no-underline" href="/">Home</a></li>
         <li><a class="hover:underline hover:underline-offset-4 active:no-underline" href="/forAll/schedules">Schedules</a></li>
         <li><a class="hover:underline hover:underline-offset-4 active:no-underline" href="/forAll/about">About</a></li>
-        {#if $isLoggedIn}
+        <!-- {#if $isLoggedIn}
             {#if $isSuperUser}
                 <li><a class="hover:underline hover:underline-offset-4 active:no-underline text-orange-500" href="/forAdmin/hallroom">hallroom</a></li>
                 <li><a class="hover:underline hover:underline-offset-4 active:no-underline text-orange-500" href="/forAdmin/movies">movies</a></li>
@@ -21,7 +21,7 @@
                 <li><a class="hidden" href="/forAdmin/movies">movies</a></li>
                 <li><a class="hidden" href="/forAdmin/schedules">schedules</a></li>
             {/if}
-        {/if}
+        {/if} -->
     </ul>
     <div class="flex items-center gap-3 font-nunito">
         {#if $isLoggedIn}

@@ -1,24 +1,13 @@
 <script>
+    import { jwtToken } from "./auth";
     export let seat_id = 0;
     export let seat_number = 0;
     export let is_booked = true;
     let is_selected = false;
 
-    // Function to get the value of a cookie by name
-    function getCookie(name) {
-        const cookies = document.cookie.split(";");
-        for (let i = 0; i < cookies.length; i++) {
-            const cookie = cookies[i].trim();
-            if (cookie.startsWith(name + "=")) {
-                return cookie.substring(name.length + 1);
-            }
-        }
-        return null;
-    }
-
     async function add_cart() {
         is_selected = !is_selected;
-        const token = getCookie("jwt_token");
+        const token = $jwtToken;
         const response = await fetch("http://127.0.0.1:8000/api/add-cart/",
             {
                 method: "POST",
@@ -43,7 +32,7 @@
 
     export async function delete_cart() {
         is_selected = !is_selected;
-        const token = getCookie("jwt_token");
+        const token = $jwtToken;
         const response = await fetch("http://127.0.0.1:8000/api/delete-cart/",
             {
                 method: "DELETE",

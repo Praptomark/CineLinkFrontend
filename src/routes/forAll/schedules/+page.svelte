@@ -4,7 +4,6 @@
     import ScheduleCard from '$lib/schedule_card.svelte';
 
     let schedule_info = data.schedule
-    console.log(schedule_info)
 </script>
 
 <div class="flex flex-col items-center gap-3 py-4">

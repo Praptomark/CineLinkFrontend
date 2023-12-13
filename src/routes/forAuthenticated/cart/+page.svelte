@@ -1,20 +1,10 @@
 <script>
     import { goto } from "$app/navigation";
     import { cartCounter, updateCartCounter } from "$lib/cart_counter"
-
-    function getCookie(name) {
-        const cookies = document.cookie.split(";");
-        for (let i = 0; i < cookies.length; i++) {
-            const cookie = cookies[i].trim();
-            if (cookie.startsWith(name + "=")) {
-                return cookie.substring(name.length + 1);
-            }
-        }
-        return null;
-    }
+    import { jwtToken } from "$lib/auth";
 
     async function get_cart() {
-        const token = getCookie("jwt_token");
+        const token = $jwtToken
         let response = await fetch(`http://127.0.0.1:8000/api/cart/`, {
             method: "GET",
             headers: {

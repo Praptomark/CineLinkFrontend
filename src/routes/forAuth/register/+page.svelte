@@ -23,7 +23,6 @@
             }
 
             const result = await response.json();
-            console.log("Data sent successfully:", result);
         } catch (error) {
             console.error(`Error: ${error}`);
         }

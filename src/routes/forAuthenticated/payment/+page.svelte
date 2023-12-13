@@ -1,24 +1,14 @@
 <script>
     import { goto } from "$app/navigation";
     import { cartCounter } from "$lib/cart_counter";
+    import { jwtToken } from "$lib/auth";
 
     let cardNumber = "";
     let cardCVC = "";
     let cardExpDate = "";
 
-    function getCookie(name) {
-        const cookies = document.cookie.split(";");
-        for (let i = 0; i < cookies.length; i++) {
-            const cookie = cookies[i].trim();
-            if (cookie.startsWith(name + "=")) {
-                return cookie.substring(name.length + 1);
-            }
-        }
-        return null;
-    }
-
     const handleSubmit = async () => {
-        const token = getCookie("jwt_token");
+        const token = $jwtToken
 
         const paymentData = {
             stripe_info: {
